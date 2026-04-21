@@ -1,0 +1,91 @@
+<div class="bg-slate-50 min-h-screen p-6">
+  <div class="max-w-6xl mx-auto">
+    <header class="mb-6">
+      <h1 class="text-3xl font-bold text-slate-800">Gerenciador de Tarefas - Estudos</h1>
+      <p class="text-slate-600 mt-1">Cards em 3 colunas: Para fazer, Em andamento, Concluídas.</p>
+    </header>
+
+    <div class="mb-6 flex items-center justify-between">
+      <div>
+        <p class="text-slate-600">Adicione novas tarefas pelo botão <span class="font-semibold">+</span>.</p>
+      </div>
+      <div>
+        <app-button-add></app-button-add>
+      </div>
+    </div>
+
+    <app-modal-form></app-modal-form>
+
+    <main>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        
+        <div>
+          <h2 class="font-semibold mb-2">Para fazer</h2>
+          <div 
+            class="space-y-3 min-h-[200px] p-3 bg-white rounded shadow-sm"
+            (dragover)="onDragOver($event)"
+            (drop)="onDrop($event, 'todo')">
+            @for (task of todoTasks(); track task.id) {
+              <ng-container *ngTemplateOutlet="taskCard; context: { $implicit: task }"></ng-container>
+            }
+          </div>
+        </div>
+
+        <div>
+          <h2 class="font-semibold mb-2">Em andamento</h2>
+          <div 
+            class="space-y-3 min-h-[200px] p-3 bg-white rounded shadow-sm"
+            (dragover)="onDragOver($event)"
+            (drop)="onDrop($event, 'doing')">
+            @for (task of doingTasks(); track task.id) {
+              <ng-container *ngTemplateOutlet="taskCard; context: { $implicit: task }"></ng-container>
+            }
+          </div>
+        </div>
+
+        <div>
+          <h2 class="font-semibold mb-2">Concluídas</h2>
+          <div 
+            class="space-y-3 min-h-[200px] p-3 bg-white rounded shadow-sm"
+            (dragover)="onDragOver($event)"
+            (drop)="onDrop($event, 'done')">
+            @for (task of doneTasks(); track task.id) {
+              <ng-container *ngTemplateOutlet="taskCard; context: { $implicit: task }"></ng-container>
+            }
+          </div>
+        </div>
+
+      </div>
+    </main>
+
+    <footer class="mt-6 text-sm text-slate-500">Gerenciado em memória via Angular Signals.</footer>
+  </div>
+</div>
+
+<ng-template #taskCard let-task>
+  <div 
+    #cardRef
+    class="p-3 border rounded bg-white shadow-sm cursor-move"
+    draggable="true"
+    (dragstart)="onDragStart($event, task.id, cardRef)"
+    (dragend)="onDragEnd(cardRef)">
+    
+    <div class="flex items-start justify-between gap-2">
+      <div class="flex items-center gap-3">
+        <span class="w-3 h-3 block rounded-full {{ proximityColor(task.due) }}" title="Proximidade"></span>
+        <div>
+          <div class="font-semibold text-slate-800">{{ task.title }}</div>
+          <div class="text-xs text-slate-500">Término: {{ task.due }} • {{ levelLabel(task.level) }}</div>
+        </div>
+      </div>
+      <div class="text-right flex-shrink-0">
+        <button (click)="editTask(task)" class="text-xs text-slate-500 mr-2 hover:underline">Editar</button>
+        <button (click)="deleteTask(task.id)" class="text-xs text-red-500 hover:underline">Excluir</button>
+      </div>
+    </div>
+    
+    @if (task.desc) {
+      <p class="mt-2 text-sm text-slate-600">{{ task.desc }}</p>
+    }
+  </div>
+</ng-template>
