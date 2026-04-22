@@ -1,7 +1,9 @@
 // src/app/app.ts
 import { Component, inject, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TaskService, Task, TaskStatus } from './services/task';
+import { TaskService } from './services/task';
+import { Task } from './models/task.model';
+import { TaskStatus } from './models/task.model';
 import { ButtonAdd } from './components/button-add/button-add';
 import { ModalForm } from './components/modal-form/modal-form';
 

@@ -1,17 +1,6 @@
 // src/app/services/task.service.ts
 import { Injectable, signal, computed } from '@angular/core';
-
-export type TaskStatus = 'todo' | 'doing' | 'done';
-export type TaskLevel = 'low' | 'medium' | 'high';
-
-export interface Task {
-  id: string;
-  title: string;
-  due: string;
-  level: TaskLevel;
-  desc: string;
-  status: TaskStatus;
-}
+import { TaskStatus, Task, TaskLevel } from '../models/task.model';
 
 @Injectable({
   providedIn: 'root'

@@ -2,7 +2,8 @@
 import { Component, inject, ViewChild, ElementRef, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { TaskService, TaskLevel } from '../../services/task';
+import { TaskService } from '../../services/task';
+import { TaskLevel } from '../../models/task.model';
 
 @Component({
   selector: 'app-modal-form',
